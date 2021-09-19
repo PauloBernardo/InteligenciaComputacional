@@ -17,7 +17,7 @@ def minimax(actual_board, player=1, alfa=-infinity, beta=infinity):
             if result == 10 or result == -10 or is_finished(board):
                 scores.append(result)
             else:
-                sc, st = minimax(board, 1 - player)
+                sc, st = minimax(board, 1 - player, alfa, beta)
                 if sc >= beta:
                     return sc, st
                 alfa = max(alfa, sc)
@@ -30,7 +30,7 @@ def minimax(actual_board, player=1, alfa=-infinity, beta=infinity):
             if result == 10 or result == -10 or is_finished(board):
                 scores.append(result)
             else:
-                sc, st = minimax(board, 1 - player)
+                sc, st = minimax(board, 1 - player, alfa, beta)
                 if sc <= alfa:
                     return sc, st
                 beta = min(beta, sc)
