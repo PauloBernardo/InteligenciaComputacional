@@ -1,4 +1,5 @@
 from copy import copy
+from pprint import pprint
 
 import math
 
@@ -64,7 +65,22 @@ def decision_tree(dataset, level=0):
 
 
 if __name__ == '__main__':
-    dataset = [
+    dataset_1 = [
+        ['N', 'Clientela', 'Tipo', 'Ficou?'],
+        [1, 'lotado', 'à la carte', False],
+        [2, 'médio', 'à la carte', True],
+        [3, 'vazio', 'à la carte', False],
+        [4, 'lotado', 'self service', False],
+        [5, 'médio', 'self service', True],
+        [6, 'vazio', 'self service', False],
+        [7, 'lotado', 'fast food', False],
+        [8, 'médio', 'fast food', True],
+        [9, 'vazio', 'fast food', False],
+        [10, 'lotado', 'sushi bar', False],
+        [11, 'médio', 'sushi bar', True],
+        [12, 'vazio', 'sushi bar', False],
+    ]
+    dataset_2 = [
         ['N', 'Tempo', 'Temperatura', 'Humidade', 'Ventando', 'Classe = Foi jogar tenis?'],
         [1, 'Ensolarado', 'Quente', 'Alta', 'Sim', False],
         [2, 'Ensolarado', 'Quente', 'Alta', 'Sim', False],
@@ -83,4 +99,14 @@ if __name__ == '__main__':
     ]
 
     print("Hello World! I'm going to do a decision tree!")
-    decision_tree(dataset)
+    print("Test 1:")
+    print("Dataset: ")
+    pprint(dataset_1)
+    print("Decision tree:")
+    decision_tree(dataset_1)
+    print("---------------------||-------------------")
+    print("Test 2:")
+    print("Dataset: ")
+    pprint(dataset_2)
+    print("Decision tree:")
+    decision_tree(dataset_2)
