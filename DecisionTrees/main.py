@@ -14,8 +14,9 @@ def calculate_entropia(values):
 
 def decision_tree(dataset, level=0):
     copy_dataset = copy(dataset)
-    if len(dataset) < 3:
-        return -1
+    if len(dataset[0]) < 3:
+        print(''.join(['\t' for _ in range(level+1)]), 'Result:', 'Not found!')
+        return
     dataset = list(map(list, zip(*dataset)))
     I = calculate_entropia(dataset[-1][1:])
 
@@ -97,6 +98,19 @@ if __name__ == '__main__':
         [13, 'Nublado', 'Quente', 'Normal', 'Não', True],
         [14, 'Chuva', 'Média', 'Alta', 'Sim', False],
     ]
+    dataset_3 = [
+        ['Student', 'Prior Experience', 'Course', 'Time', 'Liked'],
+        [1, True, 'Programming', 'Day', True],
+        [2, False, 'Programming', 'Day', False],
+        [3, True, 'History', 'Night', False],
+        [4, False, 'Programming', 'Night', True],
+        [5, True, 'English', 'Day', True],
+        [6, False, 'Programming', 'Day', False],
+        [7, True, 'Programming', 'Day', False],
+        [8, True, 'Mathematics', 'Night', True],
+        [9, True, 'Programming', 'Night', True],
+        [10, True, 'Programming', 'Night', False],
+    ]
 
     print("Hello World! I'm going to do a decision tree!")
     print("Test 1:")
@@ -110,3 +124,9 @@ if __name__ == '__main__':
     pprint(dataset_2)
     print("Decision tree:")
     decision_tree(dataset_2)
+    print("---------------------||-------------------")
+    print("Test 3:")
+    print("Dataset: ")
+    pprint(dataset_3)
+    print("Decision tree:")
+    decision_tree(dataset_3)
