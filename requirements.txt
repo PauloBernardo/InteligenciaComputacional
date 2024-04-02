@@ -1,5 +1,7 @@
-matplotlib~=3.4.3
-numpy~=1.21.2
+matplotlib
+numpy
 plotly~=5.4.0
 pandas
 sklearn
+tqdm
+tabulate
