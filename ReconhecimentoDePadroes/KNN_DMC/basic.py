@@ -7,86 +7,11 @@ from tabulate import tabulate
 from tqdm import tqdm
 
 
-def encode(actual_value, possible_values):
-    s = list(set(sorted(possible_values)))
-    s.sort()
-    return s.index(actual_value)
-
-
-def create_domain(dataset):
-    number_of_columns = len(dataset[0]) - 1
-    number_of_rows = len(dataset)
-    domains = []
-    for i in range(number_of_columns):
-        domain = []
-        for j in range(number_of_rows):
-            if (dataset[j][i] not in domain) and isinstance(dataset[j][i], str):
-                domain.append(dataset[j][i])
-        domain.sort()
-        if domain not in domains:
-            domains.append(domain)
-        domains.sort()
-    return domains
-
-
-def search_row(string, domain):
-    for i in domain:
-        if string in i:
-            return i
-    return -1
-
-
-def transform_dataset(dataset):
-    number_of_columns = len(dataset[0]) - 1
-    number_of_rows = len(dataset)
-    domains = create_domain(dataset)
-    for i in range(number_of_rows):
-        for j in range(number_of_columns):
-            row = search_row(dataset[i][j], domains)
-            dataset[i][j] = encode(dataset[i][j], row)
-    return dataset
-
-
 def euclidean_distance(a, b):
     d = 0
     for i, j in zip(a, b):
         d += (i - j) ** 2
     return math.sqrt(d)
-
-
-def transpose(matrix):
-    n = len(matrix)
-    m = len(matrix[0])
-    new_matrix = []
-    for i in range(m):
-        l = []
-        for j in range(n):
-            l.append(matrix[j][i])
-        new_matrix.append(l)
-    return new_matrix
-
-
-def new_label(dataset, labels):
-    dataset = transpose(dataset)
-    new_labels = []
-    for i, j in zip(labels, dataset[:-1]):
-        new_l = set(j)
-        if "sim" in new_l or "nao" in new_l:
-            new_labels.append(i)
-        else:
-            for k in new_l:
-                new_labels.append(k)
-    return new_labels
-
-
-def normalize(matrix, new_min, new_max):
-    t = transpose(matrix)
-    for i, l in enumerate(t):
-        mi = min(l)
-        mx = max(l)
-        for j, c in enumerate(l):
-            t[i][j] = (t[i][j] - mi) / (mx - mi) * (new_min - new_max) + new_min
-    return transpose(t)
 
 
 def neighborhoods(vector, table):
@@ -136,13 +61,12 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
             ks = np.append(ks, method.k)
 
         if i == 19:
+            # SAVE EXCEL
             pd.set_option('display.max_rows', None)
             pd.set_option('display.max_columns', None)
             pd.set_option('display.width', None)
             pd.set_option('display.max_colwidth', None)
-            (shuffled_df[[df_collumns[startCollumn], df_collumns[stopCollumn-1], 'Class']]).to_csv(file, index=False)
-            # print("Dados de treinamento: ", train_data, train_class_data)
-            # print("Dados de teste: ", numpy_array_data_data[math.floor(len(numpy_array_data_data) * 0.8):], numpy_array_class_data[math.floor(len(numpy_array_data_data) * 0.8):])
+            (shuffled_df[[df_collumns[startCollumn], df_collumns[stopCollumn-1], 'Class']]).to_excel(file, index=False)
 
             y = np.array([[yLabel.index(target[0])] for target in train_class_data])
 
@@ -159,7 +83,6 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
             # Calcular as classes para cada ponto do mesh grid
             Z = np.zeros(xx.shape)
             with tqdm(total=Z.shape[0]) as barra_progresso:
-                # print(Z.shape[0])
                 for i in range(Z.shape[0]):
                     barra_progresso.update(1)
                     for j in range(Z.shape[1]):
@@ -180,10 +103,11 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
 
             plt.show()
 
-    print(results)
+    # Resultados
+    print("Resultados: ", results)
     if isKnn:
-        print(ks)
-        print(statistics.mode(ks))
+        print("Ks escolhidos: ", ks)
+        print("Moda:", statistics.mode(ks))
     result_data = np.array(results)
 
     # Calcular a mediana
@@ -217,8 +141,6 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
         confusion_matrix[yLabel.index(numpy_array_class_data[n][0])][yLabel.index(predicted_class)] += 1
         count += 1
 
-    # print("Dados de treinamento: ", train_data, train_class_data)
-    # print("Dados de teste: ", numpy_array_data_data[math.floor(len(numpy_array_data_data) * 0.8):], numpy_array_class_data[math.floor(len(numpy_array_data_data) * 0.8):])
     print("Matriz de confusão por classe")
     data = []
 
@@ -233,7 +155,7 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
     # Table headers
     headers = ["Valores previstos" for _ in yLabel]
 
-    # Print the table
+    # Mostrar tabela
     print(tabulate(data, headers=headers, tablefmt="grid"))
 
     # Média

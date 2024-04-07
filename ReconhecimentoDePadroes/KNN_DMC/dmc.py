@@ -1,5 +1,4 @@
-import pandas as pd
-from ReconhecimentoDePadroes.KNN_DMC.basic import run_test, neighborhoods
+from ReconhecimentoDePadroes.KNN_DMC.basic import neighborhoods
 
 
 class Dmc:
@@ -36,25 +35,3 @@ class Dmc:
 
     def predict(self, vector):
         return self.nn(vector, self.centroids)
-
-
-if __name__ == '__main__':
-    method = Dmc()
-
-    iris_collumns = ['Sepal length', 'Sepal width', 'Petal length', 'Petal width', 'Class']
-    df_iris = pd.read_csv('./datasets/iris.data', names=iris_collumns, delimiter=',')
-
-    print("Running DMC - Iris")
-    run_test(df_iris, iris_collumns, method, 2, 4, file="DMC_IRIS.csv")
-
-    artificial_collumns = ['Feature 1', 'Feature 2', 'Class']
-    df_artificial = pd.read_csv('./datasets/artificial.data', names=artificial_collumns, delimiter=',')
-
-    print("Running DMC - Artificial")
-    run_test(df_artificial, artificial_collumns, method, 0, 2, file="DMC_ARTIFICIAL.csv")
-
-    collumn_collumns = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6', 'Class']
-    df_column = pd.read_csv('./datasets/column_3C.dat', names=collumn_collumns, delimiter=' ')
-
-    print("Running DMC - Collumn")
-    run_test(df_column, collumn_collumns, method, 0, 2, file="DMC_COLLUMN.csv")

@@ -5,3 +5,8 @@ pandas
 sklearn
 tqdm
 tabulate
+openpyxl
+ultralyticsplus==0.0.28
+ultralytics==8.0.43
+opencv-python
+pywin32

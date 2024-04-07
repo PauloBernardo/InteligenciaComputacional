@@ -1,6 +1,5 @@
 import numpy as np
-import pandas as pd
-from ReconhecimentoDePadroes.KNN_DMC.basic import euclidean_distance, majority, run_test
+from ReconhecimentoDePadroes.KNN_DMC.basic import euclidean_distance, majority
 
 
 def find_index(data, value):
@@ -84,25 +83,3 @@ class Knn:
             else:
                 classes[self.train_data_class[new_data[i]][0]] = 1
         return majority(classes)
-
-
-if __name__ == '__main__':
-    method = Knn(5)
-
-    iris_collumns = ['Sepal length', 'Sepal width', 'Petal length', 'Petal width', 'Class']
-    df_iris = pd.read_csv('./datasets/iris.data', names=iris_collumns, delimiter=',')
-
-    print("Running KNN - Iris")
-    run_test(df_iris, iris_collumns, method, 0, 2, isKnn=True)
-
-    artificial_collumns = ['Feature 1', 'Feature 2', 'Class']
-    df_artificial = pd.read_csv('./datasets/artificial.data', names=artificial_collumns, delimiter=',')
-
-    print("Running KNN - Artificial")
-    run_test(df_artificial, artificial_collumns, method, 0, 2, isKnn=True)
-
-    collumn_collumns = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6', 'Class']
-    df_column = pd.read_csv('./datasets/column_3C.dat', names=collumn_collumns, delimiter=' ')
-
-    print("Running KNN - Collumn")
-    run_test(df_column, collumn_collumns, method, 0, 2, isKnn=True)
