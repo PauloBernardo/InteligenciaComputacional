@@ -60,48 +60,48 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
         if isKnn:
             ks = np.append(ks, method.k)
 
-        if i == 19:
-            # SAVE EXCEL
-            pd.set_option('display.max_rows', None)
-            pd.set_option('display.max_columns', None)
-            pd.set_option('display.width', None)
-            pd.set_option('display.max_colwidth', None)
-            (shuffled_df[[df_collumns[startCollumn], df_collumns[stopCollumn-1], 'Class']]).to_excel(file, index=False)
-
-            y = np.array([[yLabel.index(target[0])] for target in train_class_data])
-
-            method.train(train_data[:, startCollumn:stopCollumn], y)
-            X = train_data[:, startCollumn:stopCollumn]
-
-            # Definir os limites do gráfico
-            x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-            y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-
-            # Criar uma grade de pontos para fazer a superfície de decisão
-            xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
-
-            # Calcular as classes para cada ponto do mesh grid
-            Z = np.zeros(xx.shape)
-            with tqdm(total=Z.shape[0]) as barra_progresso:
-                for i in range(Z.shape[0]):
-                    barra_progresso.update(1)
-                    for j in range(Z.shape[1]):
-                        Z[i, j] = method.predict([xx[i, j], yy[i, j]])[0]
-
-            # Plotar a superfície de decisão
-            plt.contourf(xx, yy, Z, alpha=0.8)
-
-            # Plotar os pontos de dados
-            scatter = plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k')
-
-            plt.xlabel(df_collumns[startCollumn])
-            plt.ylabel(df_collumns[stopCollumn-1])
-            plt.title('Superficie de decisão')
-
-            # Adicionar legendas
-            plt.legend(handles=scatter.legend_elements()[0], labels=yLabel, loc='upper right')
-
-            plt.show()
+        # if i == 19:
+        #     # SAVE EXCEL
+        #     pd.set_option('display.max_rows', None)
+        #     pd.set_option('display.max_columns', None)
+        #     pd.set_option('display.width', None)
+        #     pd.set_option('display.max_colwidth', None)
+        #     (shuffled_df[[df_collumns[startCollumn], df_collumns[stopCollumn-1], 'Class']]).to_excel(file, index=False)
+        #
+        #     y = np.array([[yLabel.index(target[0])] for target in train_class_data])
+        #
+        #     method.train(train_data[:, startCollumn:stopCollumn], y)
+        #     X = train_data[:, startCollumn:stopCollumn]
+        #
+        #     # Definir os limites do gráfico
+        #     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+        #     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+        #
+        #     # Criar uma grade de pontos para fazer a superfície de decisão
+        #     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
+        #
+        #     # Calcular as classes para cada ponto do mesh grid
+        #     Z = np.zeros(xx.shape)
+        #     with tqdm(total=Z.shape[0]) as barra_progresso:
+        #         for i in range(Z.shape[0]):
+        #             barra_progresso.update(1)
+        #             for j in range(Z.shape[1]):
+        #                 Z[i, j] = method.predict([xx[i, j], yy[i, j]])[0]
+        #
+        #     # Plotar a superfície de decisão
+        #     plt.contourf(xx, yy, Z, alpha=0.8)
+        #
+        #     # Plotar os pontos de dados
+        #     scatter = plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k')
+        #
+        #     plt.xlabel(df_collumns[startCollumn])
+        #     plt.ylabel(df_collumns[stopCollumn-1])
+        #     plt.title('Superficie de decisão')
+        #
+        #     # Adicionar legendas
+        #     plt.legend(handles=scatter.legend_elements()[0], labels=yLabel, loc='upper right')
+        #
+        #     plt.show()
 
     # Resultados
     print("Resultados: ", results)
@@ -111,7 +111,7 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, isKnn = False, 
     result_data = np.array(results)
 
     # Calcular a mediana
-    mediana = np.median(result_data)
+    mediana = np.sort(result_data)[math.floor(len(result_data) / 2)]
     # Encontrar o índice da mediana
     indice_mediana = np.where(result_data == mediana)
 

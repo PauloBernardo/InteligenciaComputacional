@@ -11,6 +11,24 @@ from ReconhecimentoDePadroes.BayesMultivariado.bayesDiscriminant import BayesDis
 from ReconhecimentoDePadroes.BayesMultivariado.naiveBayes import NaiveBayesClassifier
 
 
+def euclidean_distance(a, b):
+    d = 0
+    for i, j in zip(a, b):
+        d += (i - j) ** 2
+    return math.sqrt(d)
+
+
+def neighborhoods(vector, table):
+    neighbors = []
+    for i in table:
+        neighbors.append(euclidean_distance(vector, i[:-1]))
+    return neighbors
+
+
+def majority(dictionary):
+    return max(dictionary.items(), key=lambda x: x[1])
+
+
 def run_test(df, df_collumns, method, startCollumn, stopCollumn, step=0.02, file="result.csv"):
     results = []
     datas = []

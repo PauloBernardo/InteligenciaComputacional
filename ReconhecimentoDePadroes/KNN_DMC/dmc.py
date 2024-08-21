@@ -17,13 +17,13 @@ class Dmc:
         return [data[position][-1]]
 
     def calculate_centroids(self):
-        classes = set([target[0] for target in self.train_data_class])
+        classes = set([target for target in self.train_data_class])
         centroids = []
         for i in classes:
             centroid = [0 for _ in self.train_data[0]]
             n = 0
             for index, k in enumerate(self.train_data):
-                if self.train_data_class[index][0] == i:
+                if self.train_data_class[index] == i:
                     n += 1
                     for w in range(len(k)):
                         centroid[w] += k[w]
@@ -34,4 +34,4 @@ class Dmc:
         self.centroids = centroids
 
     def predict(self, vector):
-        return self.nn(vector, self.centroids)
+        return self.nn(vector, self.centroids)[0]

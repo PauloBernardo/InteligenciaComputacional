@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from ReconhecimentoDePadroes.KNN_DMC.basic import euclidean_distance, majority
 
@@ -27,7 +29,7 @@ class Knn:
     def find_best_k(self, data, train_data_class):
         best_k = 0
         best_accuracy = 0
-        for k in range(2, 22):
+        for k in range(2, 22 if math.floor(len(data) / 5) > 22 else math.floor(len(data) / 5)):
 
             if len(data) % 5 > 0:
                 data_parts = np.split(data[0:len(data) - len(data) % 5], 5)
@@ -58,7 +60,7 @@ class Knn:
                 count = 0
                 correct = 0
                 for index, vector in enumerate(part):
-                    if self.predict(vector)[0] == data_class_parts[i][index][0]:
+                    if self.predict(vector) == data_class_parts[i][index]:
                         correct += 1
                     count += 1
 
@@ -78,8 +80,8 @@ class Knn:
         new_data = sorted(range(len(self.train_data)), key=lambda tup: euclidean_distance(self.train_data[tup], vector))
         classes = dict()
         for i in range(self.k):
-            if self.train_data_class[new_data[i]][0] in classes.keys():
-                classes[self.train_data_class[new_data[i]][0]] += 1
+            if self.train_data_class[new_data[i]] in classes.keys():
+                classes[self.train_data_class[new_data[i]]] += 1
             else:
-                classes[self.train_data_class[new_data[i]][0]] = 1
-        return majority(classes)
+                classes[self.train_data_class[new_data[i]]] = 1
+        return majority(classes)[0]
