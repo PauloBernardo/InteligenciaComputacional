@@ -283,6 +283,24 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, step=0.02, file
         })
 
     print(table_errors)
+    # Extraindo Acurácia e Rejeição
+    acuracia = [item['Acurácia (Média):'] for item in table_errors]
+    rejeicao = [item['rejection'] for item in table_errors]
+
+    # Ajustando uma linha reta (polinômio de grau 1)
+    coef = np.polyfit(rejeicao, acuracia, 1)
+    tendencia = np.polyval(coef, rejeicao)
+
+    # Plotando o gráfico
+    plt.plot(rejeicao, acuracia, marker='o')
+    plt.plot(rejeicao, tendencia, '--', label='Linha de Tendência')
+    plt.title('Curva de Acurácia-Rejeição (AR)')
+    plt.xlabel('Rejeição')
+    plt.ylabel('Acurácia')
+    plt.grid(True)
+    plt.show()
+
+    accurace_rejection = []
 
     for Wr in [0.04, 0.12, 0.24, 0.36, 0.48]:
         threshold = find_min_error(table_errors, Wr)
@@ -337,9 +355,29 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, step=0.02, file
         rejections_mean = np.mean(rejections_data)
         # Desvio Padrão
         std_dev = np.std(result_data)
-        rejections_std_dev = np.std(result_data)
+        rejections_std_dev = np.std(rejections_data)
 
         print("Acurácia (Média):", mean)
         print("Rejeição (Média):", rejections_mean)
         print("Desvio Padrão:", std_dev)
         print("Desvio Padrão (Rejeição):", rejections_std_dev)
+
+        accurace_rejection.append([mean, rejections_mean])
+
+    # Separando acurácia e rejeição
+    acuracia = [item[0] for item in accurace_rejection]
+    rejeicao = [item[1] for item in accurace_rejection]
+
+    # Ajustando uma linha reta (polinômio de grau 1)
+    coef = np.polyfit(rejeicao, acuracia, 1)
+    tendencia = np.polyval(coef, rejeicao)
+
+    # Plotando o gráfico
+    plt.plot(rejeicao, acuracia, marker='o')
+    plt.plot(rejeicao, tendencia, '--', label='Linha de Tendência')
+    plt.title('Curva de Acurácia-Rejeição (AR)')
+    plt.xlabel('Rejeição')
+    plt.ylabel('Acurácia')
+    plt.grid(True)
+    plt.show()
+
