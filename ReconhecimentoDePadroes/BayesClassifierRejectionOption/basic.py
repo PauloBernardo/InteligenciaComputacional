@@ -369,7 +369,13 @@ def run_test(df, df_collumns, method, startCollumn, stopCollumn, step=0.02, file
     rejeicao = [item[1] for item in accurace_rejection]
 
     # Ajustando uma linha reta (polinômio de grau 1)
-    coef = np.polyfit(rejeicao, acuracia, 1)
+    print(rejeicao, acuracia)
+    # Verificar se os dados são constantes
+    if len(set(rejeicao)) == 1 or len(set(acuracia)) == 1:
+        print("Os dados são constantes. Não é possível ajustar uma reta.")
+    else:
+        coef = np.polyfit(rejeicao, acuracia, 1)
+        print("Coeficientes da reta:", coef)
     tendencia = np.polyval(coef, rejeicao)
 
     # Plotando o gráfico
