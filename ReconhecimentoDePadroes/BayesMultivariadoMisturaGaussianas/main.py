@@ -1,7 +1,7 @@
 import pandas as pd
 
-from ReconhecimentoDePadroes.BayesClassifierRejectionOption.basic import run_test
-from ReconhecimentoDePadroes.BayesClassifierRejectionOption.bayes import BayesClassifier
+from ReconhecimentoDePadroes.BayesMultivariadoMisturaGaussianas.basic import run_test
+from ReconhecimentoDePadroes.BayesMultivariadoMisturaGaussianas.bayesDiscriminantMixtureGaussian import BayesDiscriminantMixtureGaussianClassifier
 
 
 def replace_question_mark_with_mean(df, column_name):
@@ -26,10 +26,9 @@ def normalize_column(column):
 def get_iris_data():
     iris_collumns = ['Sepal length', 'Sepal width', 'Petal length', 'Petal width', 'Class']
     df_iris = pd.read_csv('./datasets/iris.data', names=iris_collumns, delimiter=',')
-    df_iris['Class'] = df_iris['Class'].replace('Iris-virginica', 'Outras')
-    df_iris['Class'] = df_iris['Class'].replace('Iris-versicolor', 'Outras')
 
     return iris_collumns, df_iris
+
 
 def get_artificial_data():
     artificial_collumns = ['Feature 1', 'Feature 2', 'Class']
@@ -41,8 +40,6 @@ def get_artificial_data():
 def get_collumn_data():
     collumn_collumns = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6', 'Class']
     df_column = pd.read_csv('./datasets/column_3C.dat', names=collumn_collumns, delimiter=' ')
-    df_column['Class'] = df_column['Class'].replace('DH', 'Outras')
-    df_column['Class'] = df_column['Class'].replace('SL', 'Outras')
 
     return collumn_collumns, df_column
 
@@ -126,31 +123,33 @@ def get_demartology_data():
     return dermatology_collumns, df_dermatology
 
 
-def run_bayes():
-    method = BayesClassifier()
+def run_bayes_discriminant():
+    method = BayesDiscriminantMixtureGaussianClassifier()
 
     iris_collumns, df_iris = get_iris_data()
-    print("Running Bayes - Iris")
-    run_test(df_iris, iris_collumns, method, 0, 2, file="BAYES_IRIS.xlsx")
-    #
+    print("Running Bayes Discriminant Mixture Gaussian - Iris")
+    run_test(df_iris, iris_collumns, method, 0, 2, file="MIXTURE_GAUSSIAN_BAYES_IRIS.xlsx")
+
     artificial_collumns, df_artificial = get_artificial_data()
-    print("Running Bayes - Artificial")
-    run_test(df_artificial, artificial_collumns, method, 0, 2, step=0.01, file="BAYES_ARTIFICIAL.xlsx")
+    print("Running Bayes Discriminant Mixture Gaussian - Artificial")
+    run_test(df_artificial, artificial_collumns, method, 0, 2, step=0.01, file="MIXTURE_GAUSSIAN_BAYES_ARTIFICIAL.xlsx")
 
     collumn_collumns, df_column = get_collumn_data()
-    print("Running Bayes - Collumn")
-    run_test(df_column, collumn_collumns, method, 0, 2, step=0.1, file="BAYES_COLLUMN.xlsx")
-
-    # breast_collumns, df_breast = get_breast_data()
-    # print("Running Bayes - Breast")
-    # run_test(df_breast, breast_collumns, method, 2, 4, file="BAYES_BREAST.xlsx")
+    print("Running Bayes Discriminant Mixture Gaussian - Collumn")
+    run_test(df_column, collumn_collumns, method, 0, 2, step=0.1, file="MIXTURE_GAUSSIAN_BAYES_COLLUMN.xlsx")
     #
-    # dermatology_collumns, df_dermatology = get_demartology_data()
-    # print("Running Bayes - Dermatology")
-    # run_test(df_dermatology, dermatology_collumns, method, 15, 17, file="BAYES_DERMATOLOGY.xlsx")
+    breast_collumns, df_breast = get_breast_data()
+    print("Running Bayes Discriminant Mixture Gaussian - Breast")
+    run_test(df_breast, breast_collumns, method, 2, 4, file="MIXTURE_GAUSSIAN_BAYES_BREAST.xlsx")
+    #
+    dermatology_collumns, df_dermatology = get_demartology_data()
+    print("Running Bayes Discriminant Mixture Gaussian - Dermatology")
+    run_test(df_dermatology, dermatology_collumns, method, 15, 17, file="MIXTURE_GAUSSIAN_BAYES_DERMATOLOGY.xlsx")
 
 
 if __name__ == '__main__':
-    run_bayes()
+    run_bayes_discriminant()
+    # run_naive_bayes()
+    # run_bayes()
     # run_knn()
     # run_dmc()
