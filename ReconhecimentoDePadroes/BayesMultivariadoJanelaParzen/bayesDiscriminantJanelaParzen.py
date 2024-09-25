@@ -64,7 +64,6 @@ class BayesDiscriminantJanelaParzenClassifier:
         :param y: rótulos das classes correspondentes.
         """
         self.classes = np.unique(y)
-        self.class_prior = {c: np.mean(y == c) for c in self.classes}
 
         for c in self.classes:
             X_c = X[y == c]
@@ -83,8 +82,7 @@ class BayesDiscriminantJanelaParzenClassifier:
         for c in self.classes:
             density_estimator = self.class_densities[c]
             log_likelihood = np.log(density_estimator.score_samples(np.array([x]))[0] + 1e-9)
-            log_prior = np.log(self.class_prior[c])
-            class_score = log_likelihood + log_prior
+            class_score = log_likelihood
             class_scores.append(class_score)
 
         predicted_class = self.classes[np.argmax(class_scores)]
